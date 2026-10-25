@@ -51,9 +51,14 @@ h3.grp::after{content:"";flex:1;height:1px;background:var(--line)}
 .card p{margin:0;color:var(--mute);font-size:15px}
 .card ul{margin:0;padding-left:18px;color:var(--mute);font-size:15px}
 .ev{display:flex;flex-wrap:wrap;gap:6px;font-size:12px}.ev span{padding:3px 10px;border-radius:99px;border:1px dashed var(--line);color:var(--mute)}.ev .ok{border-style:solid;color:#1f9d57}
+.bar{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--rose2));transform-origin:0 50%;transform:scaleX(0);z-index:6}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(620px 420px at 86% 6%,color-mix(in srgb,var(--rose) 15%,transparent),transparent 70%),radial-gradient(520px 400px at 4% 58%,color-mix(in srgb,#8aa4ff 9%,transparent),transparent 70%)}
+.eyebrow::before{content:"";display:inline-block;width:18px;height:1px;background:currentColor;vertical-align:middle;margin-right:8px}
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.rv.in{opacity:1;transform:none}
+.chips span{transition:border-color .2s,transform .2s}.chips span:hover{border-color:var(--rose);transform:translateY(-1px)}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:4px}
 .chips span{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--bg)}
-.card>a{color:var(--rose2);font-weight:600;font-size:14px;text-decoration:none}
+.links{display:flex;gap:18px}.links a,.card>a{color:var(--rose2);font-weight:600;font-size:14px;text-decoration:none}
 .tl{border-left:2px solid var(--line);margin-left:6px;padding-left:26px;display:grid;gap:24px}
 .tl>div{position:relative}.tl>div::before{content:"";position:absolute;left:-33px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--rose);border:3px solid var(--bg);box-sizing:content-box;margin:-3px}
 .tl h3{margin:0;font:600 20px Fraunces,serif}.tl span{color:var(--mute);font-size:13px}.tl p{margin:6px 0 0;color:var(--mute);font-size:15px;max-width:64ch}
@@ -69,6 +74,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:30px 24px calc
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 :focus-visible{outline:2px solid var(--rose2);outline-offset:3px}
 </style></head><body>
+<div class="bar" id="bar"></div>
 <nav><b>Vaishnavi</b><a href="#work" class="hide">Projects</a><a href="#path" class="hide">Experience</a><a href="#skills" class="hide">Skills</a><a href="#certs">Certifications</a><a href="#contact" class="hide">Contact</a><a class="pill rs" href="Vaishnavi_Jaiswal_Resume.pdf" download="Vaishnavi_Jaiswal_Resume.pdf">Resume ↓</a><button class="ico" id="th" aria-label="Toggle theme">◐</button></nav>
 <header class="hero">
  <div>
@@ -113,9 +119,9 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:30px 24px calc
   <a href="https://doi.org/10.5281/zenodo.20453863">Read the paper ↗</a></article>
  <article class="card"><span class="badge">Completed · 2025–26</span><h3>Drone Delivery Path Planner</h3>
   <p>Dijkstra and A* written from scratch in a C command-line tool. A browser visualizer adds BFS and DFS and compares all four on cells explored versus path length, with recursive-backtracker maze generation.</p>
-  <div class="ev"><span class="ok">✓ Public code and README</span><span class="ok">✓ Screenshot</span><span>Manually tested up to 20×20 grids; no automated tests</span></div>
+  <div class="ev"><span class="ok">✓ Live demo</span><span class="ok">✓ Public code and README</span><span class="ok">✓ Screenshot</span><span>Manually tested up to 20×20 grids; no automated tests</span></div>
   <div class="chips"><span>C</span><span>JavaScript</span><span>Canvas</span><span>Chart.js</span></div>
-  <a href="https://github.com/vaishnavijaiswall/drone-path-planner">View on GitHub ↗</a></article>
+  <div class="links"><a href="https://vaishnavijaiswall.github.io/drone-path-planner/">Live demo ↗</a><a href="https://github.com/vaishnavijaiswall/drone-path-planner">GitHub ↗</a></div></article>
 </div></section>
 
 <section id="path"><span class="eyebrow">02 · Experience &amp; education</span><h2>Where I’ve been learning</h2><p class="intro">Real work and the degree behind it.</p>
@@ -191,5 +197,7 @@ var btns=[].slice.call(document.querySelectorAll('.rs'));
 function pdfBlob(){var b=atob(PDF),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return new Blob([a],{type:'application/pdf'})}
 if(PDF){btns.forEach(function(b){b.href='data:application/pdf;base64,'+PDF});
  if(window.claude&&claude.use)claude.use('downloads').then(function(dl){if(!dl)return;btns.forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();dl.save({filename:'Vaishnavi_Jaiswal_Resume.pdf',data:pdfBlob()}).catch(function(){})})})}).catch(function(){})}
+var bar=document.getElementById('bar');function sp(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'}addEventListener('scroll',sp,{passive:true});sp();
+if(!reduce&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('section>.eyebrow,section>h2,section>.intro,h3.grp,.grid,.tl,.facts,.contact').forEach(function(el){el.classList.add('rv');io.observe(el)})}
 })();
 </script></body></html>
